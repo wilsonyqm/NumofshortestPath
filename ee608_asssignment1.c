@@ -4,7 +4,7 @@
 #include <queue>
 #include <stdexcept>
 #include <algorithm>
-
+#include <ctime>
 using namespace std;
 
 struct Vertex {
@@ -125,7 +125,7 @@ void find_all_shortest_paths(Vertex *s, Vertex *v, vector<vector<int> > &paths, 
         path.push_back(v->get_val());
 
         for(int i = 0; i < v->get_parents().size(); i++) {
-		cout<<"I am: " <<v->get_val()<<"Parents: "<<v->get_parents()[i]->get_val()<<'\n';
+		//cout<<"I am: " <<v->get_val()<<"Parents: "<<v->get_parents()[i]->get_val()<<'\n';
 	           find_all_shortest_paths(s, v->get_parents()[i], paths, path);
         }
 	
@@ -226,16 +226,17 @@ int main(int argc, const char * argv[])
     double a;
     time_t t;
     srand ((unsigned) time(&t)  );
-    nv=rand()%5+5;
+    nv=rand()%15+15;
     Graph *g = new Graph(nv);
+	cout<<"Start to generate Graph randomly."<<endl;
     if(nv!=0){
-    for(i=0;i<nv-1;i++){
-        for(j=i+1;j<nv-1;j++){
+    for(i=0;i<nv;i++){
+        for(j=i+1;j<nv;j++){
             a=rand()/(double)RAND_MAX;
             //printf("%f\n", a);
-            if(a>0.2 && i!=j){
+            if(a>0.8 && i!=j){
         	g->add_edge(i, j);
-		printf("Edge is from:%d to: %d\n", i, j);
+		printf("Undirected Edge from:%d to: %d\n", i, j);
                 k=k+1;
             }
         }
@@ -244,21 +245,32 @@ int main(int argc, const char * argv[])
     else {
         printf("Empty Graph!");
     }
-    
-    printf("%d\n", nv);
-    printf("Total number of Vertex is: %d",k);
+    printf("Total number of Vertexes is: %d\n",nv);
 
+    printf("Total number of Edges is: %d\n",k);
+	cout<<endl<<endl<<endl;
 	    //create a new graph
            //test case #1
-
-	for(int i = 0; i < 10; i++) {
+	clock_t t1,t2,t3,t4;
+	
+	cout<<"Tests: randomly pick start point and end point in the original graph."<<endl<<endl;
+	t3=clock();
+	for(int i = 0; i < 20; i++) {
         	int start_idx = (int)(rand() % nv), end_idx = (int)(rand() % nv);
 		g->clear_graph(start_idx);
-        	cout << "There are " << " path(s) in the graph from vertex " << start_idx << " to vertex " << end_idx;
-        	cout << "There are " << bfs(g, start_idx, end_idx) << " path(s) in the graph from vertex " << start_idx << " to vertex " << end_idx;
-		cout<<'\n';
+		
+        	cout <<"Test "<< i << " : From vertex " << start_idx << " to vertex " << end_idx<<endl;
+			t1=clock();	
+			
+			cout << "There are " << bfs(g, start_idx, end_idx) << " path(s) in the graph from vertex " << start_idx << " to vertex " << end_idx<<endl;
+			t2=clock();
+			cout<<"Consumed time is: "<<t2-t1<<" micro seconds"<<endl;
+
+			
 		cout<<'\n';
 	}
-
+	t4=clock();
+	cout<<"Total consumed time is: "<<t4-t3<<" micro seconds"<<endl;
+	
         return 0;
 }
