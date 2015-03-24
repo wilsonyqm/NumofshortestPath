@@ -157,7 +157,12 @@ void print_paths(Vertex *s, Vertex *v) {
 //return number of shortest paths from start vertex, s and end vertex, v
 int bfs(Graph *g, int start_idx, int end_idx) {
         if(!g) throw invalid_argument("ERROR: Invalid Graph Input");        
-
+		
+		if(g->get_vertices().size() == 0) {
+			cout << "WARNING: There is no any vertex in the graph!" << endl;
+			return 0;
+		}
+		
         int ans = 0;
         vector<Vertex *> vertices = g->get_vertices();
         
@@ -226,7 +231,7 @@ int main(int argc, const char * argv[])
     double a;
     time_t t;
     srand ((unsigned) time(&t)  );
-    nv=rand()%15+15;
+    nv=rand()%5+15;
     Graph *g = new Graph(nv);
 	cout<<"Start to generate Graph randomly."<<endl;
     if(nv!=0){
@@ -234,18 +239,20 @@ int main(int argc, const char * argv[])
         for(j=i+1;j<nv;j++){
             a=rand()/(double)RAND_MAX;
             //printf("%f\n", a);
-            if(a>0.8 && i!=j){
+            if(a>0.9 && i!=j){
         	g->add_edge(i, j);
-		printf("Undirected Edge from:%d to: %d\n", i, j);
-                k=k+1;
+			printf("Undirected Edge from:%d to: %d\n", i, j);
+            //printf("%d %d\n", i, j);
+			k=k+1;
             }
         }
     }
     }
     else {
-        printf("Empty Graph!");
+        printf("Empty Graph!\n");
+		return 0;
     }
-    printf("Total number of Vertexes is: %d\n",nv);
+    printf("Total number of Vertice is: %d\n",nv);
 
     printf("Total number of Edges is: %d\n",k);
 	cout<<endl<<endl<<endl;
